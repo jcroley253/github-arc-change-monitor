@@ -182,13 +182,12 @@ jobs:
       - name: Run Monitor
         working-directory: app
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AZURE_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           AZURE_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           AZURE_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
         run: |
           ./github_runner_change_monitor \
-            -runner-binary-version "v${{ vars.ACTION_RUNNER_IMAGE_RELEASE_VERSION }}" \
+            -runner-binary-version "${{ vars.ACTION_RUNNER_IMAGE_RELEASE_VERSION }}" \
             -runner-helm-version "actions-runner-controller-${{ vars.HELM_CHART_VERSION }}"
 ```
 
