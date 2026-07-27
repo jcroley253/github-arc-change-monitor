@@ -1,0 +1,61 @@
+---
+name: 🔭 Monitor GitHub API for ARC Runner Changes 🔭
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  id-token: write
+  contents: write
+  actions: write
+  checks: read
+  pull-requests: write
+
+on:
+  # schedule:
+  #   - cron: '0 14 * * *'  # Run daily at 6am PST (14:00 UTC)
+
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    name: 🔭 Monitor GitHub ARC Runner Changes 🔭
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📬 Checkout Repo 📬
+        uses: actions/checkout@v6
+
+      - name: 💾 Set Up Go 💾
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.1'
+
+      - name: 🔧 Build GitHub ARC API Monitor 🔧
+        working-directory: app
+        run: |
+          echo "🔧 Building Go Application..."
+          go build -o github_runner_change_monitor .
+          echo "✅ Build Complete!"
+
+      - name: 🔭 Run GitHub ARC API Monitor 🔭
+        working-directory: app
+        env:
+          ACTION_RUNNER_IMAGE_RELEASE_VERSION: "v${{ vars.ACTION_RUNNER_IMAGE_RELEASE_VERSION }}"
+          AZURE_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          HELM_CHART_VERSION: "actions-runner-controller-${{ vars.HELM_CHART_VERSION }}"
+        run: |
+          echo "🔭 Running GitHub ARC API Change Monitor..."
+          echo "📊 Monitoring versions:"
+          echo "  Binary: ${ACTION_RUNNER_IMAGE_RELEASE_VERSION}"
+          echo "  Helm: ${HELM_CHART_VERSION}"
+          echo "----------------------------------------------"
+          
+          ./github_runner_change_monitor \
+            -runner-binary-version "${ACTION_RUNNER_IMAGE_RELEASE_VERSION}" \
+            -runner-helm-version "${HELM_CHART_VERSION}"
+
+          echo "----------------------------------------------"
+          echo "✅ Monitor execution complete!"
