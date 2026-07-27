@@ -41,7 +41,7 @@ jobs:
       - name: 🔭 Run GitHub ARC API Monitor 🔭
         working-directory: app
         env:
-          ACTION_RUNNER_IMAGE_RELEASE_VERSION: "v${{ vars.ACTION_RUNNER_IMAGE_RELEASE_VERSION }}"
+          ACTION_RUNNER_IMAGE_RELEASE_VERSION: "${{ vars.ACTION_RUNNER_IMAGE_RELEASE_VERSION }}"
           AZURE_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
           AZURE_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           AZURE_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
