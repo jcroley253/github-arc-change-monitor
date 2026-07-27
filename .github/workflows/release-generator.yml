@@ -1,0 +1,44 @@
+---
+name: 🎉 Release Generator 🎉
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/runner-change-monitor.yml'
+      - '.release-please-manifest.json'
+      - 'app/**'
+      - 'CHANGELOG.md'
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  release-please:
+    name: 🪄 Generate Release 🪄
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🪄 Generate Release 🪄
+        uses: googleapis/release-please-action@v5
+        id: release
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📝 Output Release Information 📝
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          echo "::notice::Release ${{ steps.release.outputs.tag_name }} was created"
+          echo "::notice::Version: ${{ steps.release.outputs.version }}"
+      
+      - name: 📝 Output PR Information 📝
+        if: ${{ steps.release.outputs.pr != '' && steps.release.outputs.release_created != 'true' }}
+        run: |
+          PR_NUMBER=${{ fromJSON(steps.release.outputs.pr).number }}
+          echo "::notice::Release PR #${PR_NUMBER} created/updated - if not merged automatically, merge manually to create release"

@@ -1,0 +1,51 @@
+# config.yaml
+poll_interval: "5m"
+support_window_days: 30
+
+# Enable changelog monitoring (recommended to catch deprecations)
+enable_changelog: true
+
+# Enable health checks (validates if current runner versions can still connect)
+enable_health_checks: true
+
+# Keywords to scan for in GitHub changelog
+changelog_keywords:
+  - "breaking change"
+  - "deprecat"
+  - "runner version"
+  - "end of support"
+  - "removed"
+  - "no longer supported"
+
+repos:
+  # pinned versions only used when testing locally without passing value into -runner-binary-version
+  - owner: actions
+    repo: runner
+    type: binary
+    pinned_version: "v2.331.0"
+    critical_keywords:
+      - "breaking change"
+      - "deprecat"
+      - "retired"
+      - "end of support"
+      - "removed"
+  # pinned versions only used when testing locally without passing value into -runner-helm-version
+  - owner: actions
+    repo: actions-runner-controller
+    type: helm
+    pinned_version: "actions-runner-controller-0.13.1" # Use actual tag format from releases
+    critical_keywords:
+      - "breaking change"
+      - "deprecat"
+      - "chart: major"
+      - "removed"
+
+notifications:
+  google_chat:
+    webhook_url: "https://chat.googleapis.com/v1/spaces/XXX/messages?key=YYY&token=ZZZ"
+    space: "GitHub Action Runner Alerts"
+  email:
+    smtp_host: "mySmtpServer.corp.com"
+    from: "GitHub Action Self-Hosted Runner Alerts <no-reply@email.com>"
+    to:
+      - "myEmail@email.com"
