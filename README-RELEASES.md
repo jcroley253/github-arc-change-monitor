@@ -35,12 +35,10 @@ Release Please runs automatically when PRs are merged to main, and can also be t
 **Automatic (Default):**
 
 - Automatically runs when changes are pushed to the `main` branch that affect specific paths:
-  - `images/scripts/ubi_tools.sh`
-  - `images/universal_base_image`
-  - `resources/**`
-  - `scripts/configure_runner_scale_set.sh`
-  - `CHANGELOG.md`
+  - `.github/workflows/runner-change-monitor.yml`
   - `.release-please-manifest.json`
+  - `app/**`
+  - `CHANGELOG.md`
 - Analyzes new commits since the last release
 - Creates or updates Release PR if there are releasable commits (`feat:`, `fix:`, `chore:`, etc.)
 - No action required from you
@@ -203,12 +201,10 @@ git commit -m "[ci skip] chore: update local development notes"
 
 Release Please only tracks changes in specific paths:
 
-- ✅ `images/scripts/ubi_tools.sh`
-- ✅ `images/universal_base_image`
-- ✅ `resources/**`
-- ✅ `scripts/configure_runner_scale_set.sh`
-- ✅ `CHANGELOG.md`
+- ✅ `.github/workflows/runner-change-monitor.yml`
 - ✅ `.release-please-manifest.json`
+- ✅ `app/**`
+- ✅ `CHANGELOG.md`
 
 **Examples:**
 
@@ -234,8 +230,8 @@ Release Please uses labels to track PR status:
 - **Conventional Commits**: Team must follow conventional commit format for PR titles
 - **Runner Access**: Workflow runs on `cw-az-westus2-pd` (production runner)
 - **Workflow Files**: 
-  - `.github/workflows/release_generator.yml` - Release Please workflow
-  - `.github/workflows/pr_title_validation.yml` - PR title validation
+  - `.github/workflows/release-generator.yml` - Release Please workflow
+  - `.github/workflows/pr-title-validation.yml` - PR title validation
   - `release-please-config.json` - Release configuration
   - `.release-please-manifest.json` - Current version tracking
 
@@ -262,12 +258,10 @@ Release Please uses labels to track PR status:
 **Path Triggers:**
 The workflow only runs when these files/directories are modified:
 
-- `images/scripts/ubi_tools.sh`
-- `images/universal_base_image`
-- `resources/**` (any file under resources)
-- `scripts/configure_runner_scale_set.sh`
-- `CHANGELOG.md`
+- `.github/workflows/runner-change-monitor.yml`
 - `.release-please-manifest.json`
+- `app/**`
+- `CHANGELOG.md`
 
 ## Troubleshooting
 
